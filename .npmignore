@@ -14,3 +14,5 @@ babel.config.js
 .cypress.json
 dist/demo.html
 .browserslistrc
+.idea
+.vscode
