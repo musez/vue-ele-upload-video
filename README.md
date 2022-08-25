@@ -20,7 +20,7 @@ vue-ele-upload-video 对 element-ui 中 upload 组件进一步封装，使得视
 ## 安装
 
 ```bash
-npm install vue-ele-upload-video --save
+npm install crud-vue-ele-upload-video --save
 ```
 
 ## 使用
@@ -143,6 +143,11 @@ props: {
   accept: String,
   // 删除前的操作(同官网)
   beforeRemove: Function,
+  // 是否可删除
+  disabled: {
+    type: Boolean,
+    default: false,
+  }
 }
 ```
 

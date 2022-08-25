@@ -2,28 +2,28 @@
   <div class="ele-upload-video">
     <!-- 上传组件 -->
     <el-upload
-      :accept="accept"
-      :action="action"
-      :before-upload="handleBeforeUploadVideo"
-      :data="data"
-      :disabled="videoUploadPercent > 0 && videoUploadPercent < 100"
-      :headers="headers"
-      :httpRequest="httpRequest"
-      :name="name"
-      :on-error="handleUploadError"
-      :on-progress="handleUploadProcess"
-      :on-success="handleUploadSuccess"
-      :show-file-list="false"
-      :withCredentials="withCredentials"
-      drag
-      v-if="!value"
+        :accept="accept"
+        :action="action"
+        :before-upload="handleBeforeUploadVideo"
+        :data="data"
+        :disabled="videoUploadPercent > 0 && videoUploadPercent < 100"
+        :headers="headers"
+        :httpRequest="httpRequest"
+        :name="name"
+        :on-error="handleUploadError"
+        :on-progress="handleUploadProcess"
+        :on-success="handleUploadSuccess"
+        :show-file-list="false"
+        :withCredentials="withCredentials"
+        drag
+        v-if="!value"
     >
       <!-- 上传进度 -->
       <el-progress
-        :percentage="videoUploadPercent"
-        style="margin-top: 20px;"
-        type="circle"
-        v-if="videoUploadPercent > 0"
+          :percentage="videoUploadPercent"
+          style="margin-top: 20px;"
+          type="circle"
+          v-if="videoUploadPercent > 0"
       />
 
       <!-- 上传提示 -->
@@ -36,7 +36,7 @@
         <div class="el-upload__tip" slot="tip" v-if="showTip">
           请上传
           <span style="color: #f56c6c;"
-            >&nbsp;{{
+          >&nbsp;{{
               this.fileType ? this.fileType.join("/") : "视频"
             }}&nbsp;</span
           >格式文件
@@ -50,11 +50,11 @@
     </el-upload>
 
     <!-- 视频缩略 -->
-    <vue-hover-mask v-if="value">
+    <vue-hover-mask v-if="value&&!disabled">
       <video
-        :autoplay="false"
-        :src="value"
-        :style="{
+          :autoplay="false"
+          :src="value"
+          :style="{
           width: width + 'px',
           height: height ? height + 'px' : 'auto',
         }"
@@ -65,7 +65,7 @@
         <span @click="handlePlayerVideo" class="ele-upload-video_mask__item">
           <i class="el-icon-zoom-in"></i>
         </span>
-        <span @click="handleRemove" class="ele-upload-video_mask__item">
+        <span v-if="!disabled" @click="handleRemove" class="ele-upload-video_mask__item">
           <i class="el-icon-delete"></i>
         </span>
       </template>
@@ -74,11 +74,11 @@
     <!-- 弹窗播放 -->
     <el-dialog :visible.sync="isShowVideo" append-to-body>
       <video
-        :autoplay="true"
-        :src="value"
-        controls="controls"
-        style="width: 100%;"
-        v-if="isShowVideo"
+          :autoplay="true"
+          :src="value"
+          controls="controls"
+          style="width: 100%;"
+          v-if="isShowVideo"
       >
         您的浏览器不支持视频播放
       </video>
@@ -155,6 +155,11 @@ export default {
     accept: String,
     // 删除前的操作(同官网)
     beforeRemove: Function,
+    // 是否可删除
+    disabled: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -234,10 +239,10 @@ export default {
         const before = this.beforeRemove(this.value);
         if (before && before.then) {
           before.then(
-            () => {
-              this.doRemove();
-            },
-            () => {}
+              () => {
+                this.doRemove();
+              },
+              () => {}
           );
         } else if (before !== false) {
           this.doRemove();
